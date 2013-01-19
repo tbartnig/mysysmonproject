@@ -1,6 +1,6 @@
 <?php
 class Auth extends CI_Controller {
-
+	t
 	public function __construct()
 	{
 		parent::__construct();
