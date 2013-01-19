@@ -1,7 +1,7 @@
 <?php
 class Auth extends CI_Controller {
-	
-	public function __construct() 
+
+	public function __construct()
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
@@ -10,19 +10,19 @@ class Auth extends CI_Controller {
 		$this->load->library('session');
 		$this->load->database(); //load database library
 		session_start();
-		
-		
+
+
 	}
 
 	public function index()
 	{
 		$this->form_validation->set_rules('username', 'username', 'required');
 		$this->form_validation->set_rules('password', 'password', 'xss_clean|required|callback_user_check');
-		
+
 	    $this->_username = $this->input->post('username');
     	$this->_password = md5($this->input->post('password'));
-	
-		
+
+
 		if ($this->form_validation->run() == FALSE) {
 			$this->load->view('view_auth');
 		} else {
@@ -32,9 +32,9 @@ class Auth extends CI_Controller {
 			header('location: /');
 			//doorsturen naar admin page
 		}
-		
+
 	} //END FUNCTION INDEX
-	
+
 	//function logoff zorgt voor het afmelden
 	public function logoff()
 	{
@@ -42,7 +42,7 @@ class Auth extends CI_Controller {
 		$this->session->unset_userdata('logged_in');
 		header('location: /');
 	}
-	
+
  	/* functionname: getUserid
 	 * doelstelling: geeft het userid terug als het wachtwoord + username matched
 	 */
@@ -59,18 +59,18 @@ class Auth extends CI_Controller {
 	 * indien je gegevens kloppen wordt het userid in de session opgeslagen
 	 * en wordt er gecontroleerd of je admin bent
 	 */
-	
+
 	function user_check()
-	{ 
+	{
 	//database lookup: matchen de gegevens?
 	    $query = $this->db->query("SELECT * FROM users WHERE alias='$this->_username' and passwd='$this->_password'");
     	if($query->num_rows() == 1 ) {
-			return TRUE; //terug sturen dat we goed ingelogd zijn.	   
+			return TRUE; //terug sturen dat we goed ingelogd zijn.
 		} else {
-			$this->form_validation->set_message('user_check','Username or password unkown'); //gebruiker heeft geen match. 
+			$this->form_validation->set_message('user_check','Username or password unkown'); //gebruiker heeft geen match.
 			return FALSE;
-		} 
-		
+		}
+
 	}
 
 
